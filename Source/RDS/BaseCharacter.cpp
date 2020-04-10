@@ -32,3 +32,84 @@ void ABaseCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 
 }
 
+
+float ABaseCharacter::GetCurrentHealth()
+{
+	return CurrentHealth;
+}
+
+float ABaseCharacter::GetMaxHealth()
+{
+	return MaxHealth;
+}
+
+float ABaseCharacter::GetCurrentExp()
+{
+	return CurrentExp;
+}
+
+float ABaseCharacter::GetCurrentMaxExp()
+{
+	return CurrentMaxExp;
+}
+
+float ABaseCharacter::GetBufferExp()
+{
+	return BufferExp;
+}
+
+float ABaseCharacter::GetCharacterLevel()
+{
+	return CharacterLevel;
+}
+
+float ABaseCharacter::GetCharacterLevelCap()
+{
+	return CharacterLevelCap;
+}
+
+float ABaseCharacter::AddExp(float AddedExp)
+{
+	return BufferExp = CurrentExp + AddedExp;
+}
+
+void ABaseCharacter::LevelUp()
+{
+	if (CharacterLevel <= CharacterLevelCap)
+	{
+		CharacterLevel++;
+
+		float RemaingExp = BufferExp - CurrentMaxExp;
+		CalculateMaxExp();
+		BufferExp = 0.f;
+		CurrentExp = 0.f;
+		AddExp(RemaingExp);
+
+	}
+	else
+	{
+		BufferExp = CurrentMaxExp;
+		CurrentExp = CurrentMaxExp;
+	}
+}
+
+
+
+float ABaseCharacter::GetPerctentage(float CurrentValue, float MaxValue)
+{
+	return CurrentValue / MaxValue;
+}
+
+float ABaseCharacter::CalculateMaxExp()
+{
+	return CurrentMaxExp = CurrentMaxExp * MaxExpMultiplier;
+}
+
+bool ABaseCharacter::IsAlive()
+{
+	if (GetCurrentHealth() <= 0)
+	{
+		return false;
+	}
+	return true;
+}
